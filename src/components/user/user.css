@@ -1,0 +1,10 @@
+.flex-center{
+    display: flex;
+    flex-direction: column !important;
+    justify-content: space-evenly;
+    align-items: start;
+}    
+
+.css-1aquho2-MuiTabs-indicator{
+    background-color: #39CDCC !important;
+}
