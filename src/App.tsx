@@ -6,6 +6,7 @@ import Dashboard from './screens/dashboard';
 import Users from './components/dashboard/users';
 import UserDetails from './components/user';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 
 const theme = createTheme({
   typography: {
@@ -41,9 +42,16 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <Dashboard>
-          <UserDetails/>
-        </Dashboard>
+        <Router>
+          <Routes>
+            <Route path = '/login' element = {<Login/>}>
+            </Route>
+            <Route path = '/users' element = {<Dashboard><Users/></Dashboard>}>
+            </Route>
+            <Route path = '/user/:id' element = {<Dashboard><UserDetails/></Dashboard>}>
+            </Route>
+          </Routes>
+        </Router>
       </div>
     </ThemeProvider>
   );

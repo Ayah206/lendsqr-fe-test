@@ -4,8 +4,9 @@ import { useDemoData } from '@mui/x-data-grid-generator';
 import useRequest from '../../hooks/useRequest';
 import { Box, Chip, IconButton, MenuItem, Menu, ListItemIcon } from '@mui/material';
 import { Blacklist, Activate, Eye } from '../../assets/icons';
-import axios from 'axios'
+import { urls } from '../../constants/urls';
 import moment from 'moment'
+import { useNavigate } from "react-router-dom";
 
 // define types and interfaces
 type myDate = {
@@ -14,8 +15,6 @@ type myDate = {
 interface Prop {
     label : String
 }
-
-const link = 'https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users'
 
 function CustomChip({label}:Prop){
     var color : string
@@ -52,27 +51,20 @@ function CustomChip({label}:Prop){
 
 export default function Table() {
    const [Rows, setRows] = useState<any>([])
+   const [loading, setLoading] = useState(true)
+   const {getRequest} = useRequest()
+   let navigate = useNavigate(); 
 
-    //handle status menu
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
-
-   const getRequest = async (apiLink = link) =>{
-    return axios
-        .get(apiLink)
-        .then(function (response) {
-            setRows(response.data)
-        })
-    }
     useEffect(() => {
-        getRequest()
+        getRequest(urls.getUsers).then((response) => {
+            setRows(response.data)    
+        });
+        
     }, [])
+
+    useEffect(()=>{
+        (Rows.length>0) && setLoading(false)
+    }, [Rows])
 
     const changeStatus = React.useCallback((id: string, param: string) => {
         const newRow = Rows.map((row: any) => {
@@ -81,6 +73,9 @@ export default function Table() {
         setRows(newRow)
     },[Rows]);
 
+    const viewUser = (id:string)=>{
+        navigate(`/user/${id}`)
+    }
 
     const transactionColumns:GridColumns = [
         {
@@ -145,7 +140,7 @@ export default function Table() {
                 <GridActionsCellItem
                     icon={<Eye />}
                     label="view details"
-                    // onClick={()=>changeStatus(params.i)}
+                    onClick={()=>viewUser(params.id)}
                     showInMenu
                 />,
                 <GridActionsCellItem
@@ -165,11 +160,6 @@ export default function Table() {
             ]
         },
     ]
-  const { data } = useDemoData({
-    dataSet: 'Commodity',
-    rowLength: 500,
-    maxColumns: 6,
-  });
 
   return (
     <div style={{ height: 'auto', width: '100%' }}>
@@ -202,12 +192,7 @@ export default function Table() {
         rowHeight={70}
         rows={Rows}
         columns={transactionColumns}
-        initialState={{
-          ...data.initialState,
-          pagination: {
-            pageSize: 25,
-          },
-        }}
+        loading = {loading}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -8,7 +8,56 @@ import { Stack, Link, Grid, Button, Divider } from '@mui/material';
 import { Back, Avatar } from '../../assets/icons';
 import Rating from '@mui/material/Rating';
 import { styled } from '@mui/material/styles';
-import GeneralDetails from './generalDetails'
+import GeneralDetails from './generalDetails';
+import DummyText from './dummyText'
+import useRequest from '../../hooks/useRequest'
+import { urls } from '../../constants/urls';
+import {useParams} from 'react-router-dom'
+type education = {
+    duration : string,
+    employmentStatus : string,
+    level : string,
+    loanRepayment : string,
+    officeEmail : string,
+    sector : string,
+    monthlyIncome: number[]
+}
+type guarantor = {
+    address : string,
+    firstName : string,
+    gender : string,
+    lastName : string,
+    phoneNumber : string
+}
+type profile = {
+    address : string,
+    avatar : string,
+    bvn : string,
+    currency : string,
+    firstName : string,
+    gender : string,
+    lastName : string,
+    phoneNumber : string
+}
+type socials = {
+    facebook : string,
+    instagram : string,
+    twitter : string
+}
+type user = {
+    accountBalance: string,
+    accountNumber: string,
+    createdAt: Date,
+    education: education,
+    id: string,
+    lastActiveDate: Date,
+    orgName: string,
+    phoneNumber: string,
+    userName: string,
+    guarantor: guarantor,
+    profile: profile,
+    socials: socials
+}
 
 
 interface TabPanelProps {
@@ -43,7 +92,6 @@ const StyledTab = styled(Tab)(({ theme }) => ({
     fontSize: '16px',
     '& .css-ih1hio-MuiButtonBase-root-MuiTab-root, &.Mui-selected' : {
         color: '#39CDCC'
-
     },
   }));
 
@@ -54,9 +102,9 @@ function TabPanel(props: TabPanelProps) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      style= {{background:'#ffffff', minWidth: '200px'}}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tabpanel-${index}`}
+      style= {{background:'#ffffff'}}
       {...other}
     >
       {value === index && (
@@ -70,24 +118,77 @@ function TabPanel(props: TabPanelProps) {
 
 function a11yProps(index: number) {
   return {
-    id: `full-width-tab-${index}`,
-    'aria-controls': `full-width-tabpanel-${index}`,
+    id: `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
   };
 }
 
 export default function UserDetails() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const initialUser = {
+    accountBalance: '',
+    accountNumber: '',
+    createdAt: new Date(),
+    education: {
+        duration : '',
+        employmentStatus : '',
+        level : '',
+        loanRepayment : '',
+        officeEmail : '',
+        sector : '',
+        monthlyIncome: []
+    },
+    id: '',
+    lastActiveDate: new Date(),
+    orgName: '',
+    phoneNumber: '',
+    userName: '',
+    guarantor: {
+        address : '',
+        firstName : '',
+        gender : '',
+        lastName : '',
+        phoneNumber : ''
+    },
+    profile: {
+        address : '',
+        firstName : '',
+        gender : '',
+        lastName : '',
+        phoneNumber : '',
+        avatar : '',
+        bvn : '',
+        currency : ''
+    },
+    socials: {
+        facebook : '',
+        instagram : '',
+        twitter : ''
+    }
+  }
+  const [User, setUser] = useState<user>(initialUser)
   
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  let { id } = useParams()
+  const {getRequest} = useRequest()
+  useEffect(() => {
+    getRequest(`${urls.getUsers}/${id}`).then((response) => {
+        setUser(response.data)
+    }); 
+  },[])
+
+  console.log(User)    
+
 
   return (
     <Box sx = {{padding: {md:'0 2rem'}}}>
         <Box sx = {{py : 6, display:'flex', justifyContent:'space-between'}}>
             <Stack sx = {{mt:3}} spacing = {3.5}>
                 <Typography align = 'left' sx = {{color: '#545F7D', cursor: 'pointer'}}>
-                    <Link href='#' color = 'inherit' underline = 'none'>
+                    <Link href='/users' color = 'inherit' underline = 'none'>
                         <Back/> <span style = {{paddingLeft:'4px'}}>Back to users</span>
                     </Link>
                 </Typography>
@@ -95,7 +196,7 @@ export default function UserDetails() {
                     User Details
                 </Typography>
             </Stack>
-            <Grid container direction={{xs: 'column', md:'row'}}  spacing = {2} sx = {{width:400, justifyContent:'end', alignItems: 'end'}} >
+            <Grid container direction={{xs: 'column', md:'row'}}  spacing = {2} sx = {{width:'fit-content', justifyContent:'end', alignItems: 'end'}} >
                 <Grid item>
                     <CustomButton color='#E4033B' text ='blacklist user' />
                 </Grid>
@@ -139,7 +240,7 @@ export default function UserDetails() {
                         </Grid>
                     </Grid>
                 </Stack>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                <Tabs value={value} onChange={handleChange} variant = "scrollable" aria-label="basic tabs example">
                     <StyledTab label="General details" {...a11yProps(0)} />
                     <StyledTab label="Documents" {...a11yProps(1)} />
                     <StyledTab label="Bank details" {...a11yProps(2)} />
@@ -149,7 +250,7 @@ export default function UserDetails() {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <GeneralDetails/>
+                <GeneralDetails  user = {User}/>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 Item Two

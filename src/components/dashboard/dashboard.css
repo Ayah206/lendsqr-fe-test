@@ -33,3 +33,6 @@
 .css-1aquho2-MuiTabs-indicator{
     background-color: #39CDCC !important;
 }
+.css-69z67c-MuiTabs-scroller{
+    overflow-x: scroll !important;
+}

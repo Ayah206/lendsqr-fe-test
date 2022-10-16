@@ -1,7 +1,58 @@
 import React from 'react';
 import {Grid, Box, Typography, Stack, Divider} from '@mui/material'
+import { userInfo } from 'os';
 
-function GeneralDetails() {
+
+type education = {
+    duration : string,
+    employmentStatus : string,
+    level : string,
+    loanRepayment : string,
+    officeEmail : string,
+    sector : string,
+    monthlyIncome: number[]
+}
+type guarantor = {
+    address : string,
+    firstName : string,
+    gender : string,
+    lastName : string,
+    phoneNumber : string
+}
+type profile = {
+    address : string,
+    avatar : string,
+    bvn : string,
+    currency : string,
+    firstName : string,
+    gender : string,
+    lastName : string,
+    phoneNumber : string
+}
+type socials = {
+    facebook : string,
+    instagram : string,
+    twitter : string
+}
+type user = {
+    accountBalance: string,
+    accountNumber: string,
+    createdAt: Date,
+    education: education,
+    id: string,
+    lastActiveDate: Date,
+    orgName: string,
+    phoneNumber: string,
+    userName: string,
+    guarantor: guarantor,
+    profile: profile,
+    socials: socials
+}
+interface Props {
+    user: user
+}
+function GeneralDetails({user} : Props) {
+    console.log(user.profile.firstName)
     return (
         <Stack spacing= {2}>
             <Box>
@@ -11,7 +62,7 @@ function GeneralDetails() {
                 <Grid container columnSpacing = {4} rowSpacing={5.5} sx = {{py:2}}>
                     <Grid item xs = {6} md = {4} lg = {2.3}>
                         <Typography variant = 'subtitle2'>full name</Typography>
-                        <Typography variant = 'subtitle1' align= 'left'>Grace Effiom</Typography>
+                        <Typography variant = 'subtitle1' align= 'left'>{user.profile.firstName+' '+ user.profile.lastName}</Typography>
                     </Grid>
                     <Grid item xs = {6} md = {4} lg = {2.3} >
                         <Typography variant = 'subtitle2'>phone number</Typography>
