@@ -21,6 +21,7 @@ This project uses React material ui as a styling library.
 
 This project, available on 'heroku.aya.com' has three screens:
 1. Login screen (/login) - Fully responsive but not functional as no login API was provided.
-2. Dashboard (/dashboard or /users) - Renders the application dashboard which by default displays the list of users fetched from the provided API ( https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users).
+2. Dashboard (/dashboard or /users) - Renders the application dashboard which by default displays the table of users fetched from the provided API ( https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users).
 This screen also satisfies the filter action and view/change status functionalities specified in the figma 'Users - showing filters' page. 
 3. UserDetails (/users/:id) -  Displays Details of a specific user provided in the param section of the url.
+Button functionalities to Blacklist and Activate user are implemented, and reflect on the user status in users table (/users or /dashboard)

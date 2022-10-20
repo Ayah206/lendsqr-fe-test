@@ -25,7 +25,6 @@ export default function ClippedDrawer({children}: Props) {
 
     React.useEffect(()=>{
         const el = document.getElementById(location.pathname)
-        console.log('element is', el)
         el && el.classList.add('menuActive')
     }, [])
 

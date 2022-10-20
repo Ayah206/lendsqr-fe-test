@@ -70,7 +70,7 @@ export default function Table() {
 
     const usersLocal = React.useCallback( async () => {
         let users = await getUser()
-        if(users){
+        if(users && users.length>0){
             setRows(users)
             setLoading(false)
         }

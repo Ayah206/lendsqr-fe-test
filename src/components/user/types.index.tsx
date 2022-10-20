@@ -6,5 +6,7 @@ export interface TabPanelProps {
   }
 export interface Props {
     color : string,
-    text : string
+    text : string,
+    disabled: boolean
+    action ?: any
 }

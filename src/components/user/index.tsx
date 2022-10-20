@@ -18,9 +18,12 @@ import {Props, TabPanelProps} from './types.index'
 import useStorage from '../../hooks/useStorage';
 
 
-function CustomButton({color, text} : Props){
+
+function CustomButton({color, text, disabled, action} : Props){
     return (
-        <Button variant="outlined" sx = {{
+        <Button variant="outlined" disabled = {disabled}
+            onClick = {action}
+            sx = {{
             color: color,
             fontWeight:'600',
             size: '14px',
@@ -75,10 +78,13 @@ export default function UserDetails() {
   const [value, setValue] = useState(0);
   const [loading, setLoading] = useState(true)
   const [errMsg, setErrMsg] = useState<string>('')
+  const [Users, setUsers] = useState<any>([])
   const [User, setUser] = useState<user>({} as user)
-  const [localUser, setLocalUser] = useState<user>({} as user)
-  const {getUser} = useStorage()
+  const {getUser, storeUser} = useStorage()
   const {getRequest} = useRequest()
+  const [active, setActive] = useState(false)
+  const [blacklisted, setBlacklisted] = useState(false)
+
 
   let { id } = useParams()
 
@@ -102,8 +108,9 @@ export default function UserDetails() {
   }, [])
 
   const userLocal = React.useCallback( async (id:any) => {
-    let user = await getUser()
-    const localUser = user.find((item:any) => item.id === id)
+    let users = await getUser()
+    setUsers(users)
+    const localUser = users.find((item:any) => item.id === id)
     if(localUser){
         setUser(localUser)
         setLoading(false)
@@ -117,6 +124,28 @@ export default function UserDetails() {
   useEffect(() => {
     userLocal(id)
   },[])
+  
+  useEffect(()=>{
+    if(User.status){
+        if(User.status == 'active'){
+            setActive(true)
+            setBlacklisted(false)
+        }
+        if(User.status == 'blacklisted'){
+            setBlacklisted(true)
+            setActive(false)
+        }
+    }
+  }, [User, Users])
+
+  const changeStatus = React.useCallback((param: string, id:string) => {
+    setUser({...User, status: param})
+    const newUsers = Users.map((row: any) => {
+        return row.id === id ? {...row, status: param} : row
+    })
+    setUsers(newUsers)
+    storeUser(newUsers)
+},[Users]);
 
   return (
     loading?(
@@ -148,10 +177,14 @@ export default function UserDetails() {
             </Stack>
             <Grid container direction={{xs: 'column', md:'row'}}  spacing = {2} sx = {{width:'fit-content', justifyContent:'end', alignItems: 'end'}} >
                 <Grid item>
-                    <CustomButton color='#E4033B' text ='blacklist user' />
+                    <CustomButton color='#E4033B' text ='blacklist user' disabled = {blacklisted} 
+                      action = {()=>changeStatus('blacklisted', User.id)}  
+                    />
                 </Grid>
                 <Grid item>
-                    <CustomButton color='#39CDCC' text ='activate user' />          
+                    <CustomButton color='#39CDCC' text ='activate user' disabled = {active} 
+                       action = {()=>changeStatus('active', User.id)} 
+                    />          
                 </Grid>
             </Grid>
         </Box>
@@ -164,7 +197,7 @@ export default function UserDetails() {
                     <Avatar
                         alt={User.profile.firstName}
                         src={User.profile.avatar}
-                        sx={{ width: 56, height: 56 }}
+                        sx={{ width: 100, height: 100 }}
                     />
                     <Grid container 
                         direction={{xs:'column', md:'row'}}

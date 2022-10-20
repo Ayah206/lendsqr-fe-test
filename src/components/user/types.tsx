@@ -43,4 +43,5 @@ export type user = {
     guarantor: guarantor,
     profile: profile,
     socials: socials
+    status?: string
 }
