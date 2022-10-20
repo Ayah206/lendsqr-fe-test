@@ -25,6 +25,7 @@ const theme = createTheme({
       color: '#545F7D',
       fontWeight: '500',
       lineHeight:'16px',
+      whiteSpace: 'normal'
     },
     subtitle2:{
       color: '#545F7D',

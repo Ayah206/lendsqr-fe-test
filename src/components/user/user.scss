@@ -1,10 +1,22 @@
-.flex-center{
-    display: flex;
-    flex-direction: column !important;
-    justify-content: space-evenly;
-    align-items: start;
-}    
 
-.css-1aquho2-MuiTabs-indicator{
-    background-color: #39CDCC !important;
+.Tab{
+   
+    @media screen and (max-width: 550px)  {
+        max-width: 390px;  
+    }
+    @media screen and (min-width: 550px) and (max-width: 600px)  {
+        max-width: 470px;  
+    }
+    @media screen and (min-width: 600px) and (max-width: 650px)  {
+        max-width: 530px;  
+    }
+    @media screen and (min-width: 650px) and (max-width: 700px)  {
+        max-width: 570px;  
+    }
+    @media screen and (min-width: 700px) and (max-width: 750px)  {
+        max-width: 600px;  
+    }
+    @media screen and (min-width: 900px) and (max-width: 1000px)  {
+        max-width: 500px;  
+    }
 }

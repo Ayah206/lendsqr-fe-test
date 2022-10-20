@@ -16,6 +16,7 @@ import {useParams} from 'react-router-dom';
 import {user } from './types'
 import {Props, TabPanelProps} from './types.index'
 import useStorage from '../../hooks/useStorage';
+import './user.scss'
 
 
 
@@ -229,7 +230,7 @@ export default function UserDetails() {
                         </Grid>
                     </Grid>
                 </Stack>
-                <Tabs value={value} onChange={handleChange} variant = "scrollable" aria-label="basic tabs example">
+                <Tabs value={value} onChange={handleChange} variant = "scrollable" aria-label="basic tabs example" className = 'Tab' >
                     <StyledTab label="General details" {...a11yProps(0)} />
                     <StyledTab label="Documents" {...a11yProps(1)} />
                     <StyledTab label="Bank details" {...a11yProps(2)} />
