@@ -1,5 +1,4 @@
 import { Box, Grid, Paper, Stack, styled, Typography } from '@mui/material';
-import { textTransform } from '@mui/system';
 import React from 'react';
 import CardData from '../../constants/cardData';
 import Table from './table'

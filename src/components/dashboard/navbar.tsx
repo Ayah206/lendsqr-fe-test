@@ -4,11 +4,12 @@ import { Stack, TextField, Button, InputBase, Link } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import {Images} from '../../assets/images'
 import { styled } from '@mui/material/styles';
-import './dashboard.css'
+import './dashboard.scss'
 import { Search, Notification, DropDown } from '../../assets/icons';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Menu, MenuItem, MenuList, ListItemIcon, ListItemText} from '@mui/material';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import {Props} from './types.navBar'
 
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -28,10 +29,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   }));
 
-interface Props {
-    mobileOpen: boolean;
-    setMobileOpen: Function;
-}  
 function Navbar({mobileOpen, setMobileOpen} : Props) {
     //handle app bar menu
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

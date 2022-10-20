@@ -4,72 +4,20 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Stack, Link, Grid, Button, Divider } from '@mui/material';
-import { Back, Avatar } from '../../assets/icons';
+import { Stack, Link, Grid, Button, Divider, Avatar, Backdrop, CircularProgress, Alert } from '@mui/material';
+import { Back } from '../../assets/icons';
 import Rating from '@mui/material/Rating';
 import { styled } from '@mui/material/styles';
 import GeneralDetails from './generalDetails';
 import DummyText from './dummyText'
 import useRequest from '../../hooks/useRequest'
 import { urls } from '../../constants/urls';
-import {useParams} from 'react-router-dom'
-type education = {
-    duration : string,
-    employmentStatus : string,
-    level : string,
-    loanRepayment : string,
-    officeEmail : string,
-    sector : string,
-    monthlyIncome: number[]
-}
-type guarantor = {
-    address : string,
-    firstName : string,
-    gender : string,
-    lastName : string,
-    phoneNumber : string
-}
-type profile = {
-    address : string,
-    avatar : string,
-    bvn : string,
-    currency : string,
-    firstName : string,
-    gender : string,
-    lastName : string,
-    phoneNumber : string
-}
-type socials = {
-    facebook : string,
-    instagram : string,
-    twitter : string
-}
-type user = {
-    accountBalance: string,
-    accountNumber: string,
-    createdAt: Date,
-    education: education,
-    id: string,
-    lastActiveDate: Date,
-    orgName: string,
-    phoneNumber: string,
-    userName: string,
-    guarantor: guarantor,
-    profile: profile,
-    socials: socials
-}
+import {useParams} from 'react-router-dom';
+import {user } from './types'
+import {Props, TabPanelProps} from './types.index'
+import useStorage from '../../hooks/useStorage';
 
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  dir?: string;
-  index: number;
-  value: number;
-}
-interface Props {
-    color : string,
-    text : string
-}
 function CustomButton({color, text} : Props){
     return (
         <Button variant="outlined" sx = {{
@@ -125,65 +73,67 @@ function a11yProps(index: number) {
 
 export default function UserDetails() {
   const [value, setValue] = useState(0);
-  const initialUser = {
-    accountBalance: '',
-    accountNumber: '',
-    createdAt: new Date(),
-    education: {
-        duration : '',
-        employmentStatus : '',
-        level : '',
-        loanRepayment : '',
-        officeEmail : '',
-        sector : '',
-        monthlyIncome: []
-    },
-    id: '',
-    lastActiveDate: new Date(),
-    orgName: '',
-    phoneNumber: '',
-    userName: '',
-    guarantor: {
-        address : '',
-        firstName : '',
-        gender : '',
-        lastName : '',
-        phoneNumber : ''
-    },
-    profile: {
-        address : '',
-        firstName : '',
-        gender : '',
-        lastName : '',
-        phoneNumber : '',
-        avatar : '',
-        bvn : '',
-        currency : ''
-    },
-    socials: {
-        facebook : '',
-        instagram : '',
-        twitter : ''
-    }
-  }
-  const [User, setUser] = useState<user>(initialUser)
-  
+  const [loading, setLoading] = useState(true)
+  const [errMsg, setErrMsg] = useState<string>('')
+  const [User, setUser] = useState<user>({} as user)
+  const [localUser, setLocalUser] = useState<user>({} as user)
+  const {getUser} = useStorage()
+  const {getRequest} = useRequest()
+
+  let { id } = useParams()
+
+  //handle tab switching
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
-  let { id } = useParams()
-  const {getRequest} = useRequest()
-  useEffect(() => {
+  const userAPI = React.useCallback(()=> {
     getRequest(`${urls.getUsers}/${id}`).then((response) => {
         setUser(response.data)
-    }); 
+        setLoading(false)
+    }).catch((err)=>{
+        setLoading(false)
+        if(err.response){
+          setErrMsg(err.response.statusText)  
+        }else{
+          setErrMsg(err.message)
+        }
+    });
+  }, [])
+
+  const userLocal = React.useCallback( async (id:any) => {
+    let user = await getUser()
+    const localUser = user.find((item:any) => item.id === id)
+    if(localUser){
+        setUser(localUser)
+        setLoading(false)
+    }
+    else{
+        userAPI()
+    }
+  },[userAPI])
+  
+
+  useEffect(() => {
+    userLocal(id)
   },[])
 
-  console.log(User)    
-
-
   return (
+    loading?(
+    <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+        >
+        <CircularProgress color="inherit" />
+    </Backdrop>):errMsg?(
+    <Box sx = {{height:'100vh', pt: 10}}>
+        <Typography align = 'left' sx = {{color: '#545F7D', my: 4}}>
+            <Link href='/users' color = 'inherit' underline = 'none'>
+                <Back/> <span style = {{paddingLeft:'4px'}}>Back to users</span>
+            </Link>
+        </Typography>
+        <Alert severity="error">User not found</Alert>
+    </Box>):(
     <Box sx = {{padding: {md:'0 2rem'}}}>
         <Box sx = {{py : 6, display:'flex', justifyContent:'space-between'}}>
             <Stack sx = {{mt:3}} spacing = {3.5}>
@@ -211,7 +161,11 @@ export default function UserDetails() {
                     sx = {{
                         display: 'flex', alignItems:'center', pb: 3, 
                     }}>
-                    <Avatar/>
+                    <Avatar
+                        alt={User.profile.firstName}
+                        src={User.profile.avatar}
+                        sx={{ width: 56, height: 56 }}
+                    />
                     <Grid container 
                         direction={{xs:'column', md:'row'}}
                         columnSpacing= {4}
@@ -219,7 +173,9 @@ export default function UserDetails() {
                         sx = {{height:{md:'70px'}, pl:2}}
                     >
                         <Grid item className = 'flex-center' >
-                            <Typography variant = 'caption' sx = {{fontSize: '22px'}}> Grace Effiom</Typography>
+                            <Typography variant = 'caption' sx = {{fontSize: '22px'}}>
+                                {User.profile.firstName +' '+ User.profile.lastName}
+                            </Typography>
                             <Typography align='left' sx = {{fontSize: '14px', color:'#545F7D'}} >LSQFf587g90</Typography>
                         </Grid>
                         <Grid item md = {0}>
@@ -250,24 +206,24 @@ export default function UserDetails() {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <GeneralDetails  user = {User}/>
+                <GeneralDetails  user = {User} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
+                <DummyText/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Item Three
+                <DummyText/>
             </TabPanel>
             <TabPanel value={value} index={3}>
-                Item One
+                <DummyText/>
             </TabPanel>
             <TabPanel value={value} index={4}>
-                Item Two
+                <DummyText/>
             </TabPanel>
             <TabPanel value={value} index={5}>
-                Item Three
+                <DummyText/>
             </TabPanel>
         </Box>
-    </Box>
+    </Box>)
   );
 }

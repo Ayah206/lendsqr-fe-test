@@ -2,7 +2,7 @@ import React from 'react';
 import {Images} from '../../assets/images'
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import './login.css'
+import './login.scss'
 
 const Left = () => {
     return (

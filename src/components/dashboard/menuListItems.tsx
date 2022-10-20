@@ -1,18 +1,7 @@
 import React from 'react';
-import {List, ListItemButton, ListItem, ListItemText, ListItemIcon } from '@mui/material';
+import {List, ListItemButton, ListItem, ListItemText, ListItemIcon, Link } from '@mui/material';
+import {Props} from './types.menuListItem'
 
-type listItemObject = {
-    icon : React.ReactNode,
-    text : string
-}
-type menuObject = {
-    title : String,
-    details : Array<listItemObject>
-}
-
-interface Props {
-    listDetails: menuObject;
-}  
 function MenuListItems({listDetails} : Props) {
     return (
         <List>
@@ -31,10 +20,14 @@ function MenuListItems({listDetails} : Props) {
                 />
             </ListItem>
             {listDetails.details.map(
-                (item, index) => (
-                    <ListItem key = {index} disablePadding>
-                        <ListItemButton >
-                            <ListItemIcon  sx = {{minWidth:'25px', ml:2}}>
+                (item, index) => {
+                    let str = item.text.split(' ')
+                        .map(item => item)
+                        .join('-')
+                    return (
+                    <ListItem key = {item.text} disablePadding>
+                        <ListItemButton id = {`/${str}`} href = {`/${str}`} >
+                            <ListItemIcon  sx = {{minWidth:'25px', ml:2, opacity: '60%'}}>
                                 {item.icon}
                             </ListItemIcon>
                             <ListItemText primary= {item.text} 
@@ -45,8 +38,8 @@ function MenuListItems({listDetails} : Props) {
                                 }} 
                             />
                         </ListItemButton>
-                    </ListItem>    
-                )
+                    </ListItem>)   
+                }
             )}
         </List>
     );

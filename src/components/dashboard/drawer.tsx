@@ -13,14 +13,22 @@ import ListItemText from '@mui/material/ListItemText';
 import { Briefcase, DropDownEmpty, Home } from '../../assets/icons';
 import MenuListItems from './menuListItems';
 import MenuData from '../../constants/menuData';
-import './dashboard.css'
+import './dashboard.scss'
+import {Props} from './types.drawer'
+import { useLocation } from 'react-router-dom';
 
 const drawerWidth = 283;
-interface Props {
-    children : React.ReactNode
-}
+
 
 export default function ClippedDrawer({children}: Props) {
+    const location = useLocation()
+
+    React.useEffect(()=>{
+        const el = document.getElementById(location.pathname)
+        console.log('element is', el)
+        el && el.classList.add('menuActive')
+    }, [])
+
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -31,7 +39,7 @@ export default function ClippedDrawer({children}: Props) {
             <Box sx={{ overflow: 'auto'}}>
                 <List>
                     <ListItem disablePadding >
-                        <ListItemButton  >
+                        <ListItemButton id = '/organisation' >
                             <ListItemIcon  sx = {{minWidth:'25px', ml:2}}>
                               <Briefcase/>  
                             </ListItemIcon>
@@ -44,7 +52,7 @@ export default function ClippedDrawer({children}: Props) {
                 </List>
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton >
+                        <ListItemButton id = '/dashboard' >
                             <ListItemIcon  sx = {{minWidth:'25px', ml:2}}>
                               <Home/>  
                             </ListItemIcon>

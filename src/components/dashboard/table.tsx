@@ -1,20 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import { DataGrid, GridColumns, GridActionsCellItem, GridRowId } from '@mui/x-data-grid';
-import { useDemoData } from '@mui/x-data-grid-generator';
+import { DataGrid, GridColumns, GridActionsCellItem, GridFilterOperator } from '@mui/x-data-grid';
 import useRequest from '../../hooks/useRequest';
-import { Box, Chip, IconButton, MenuItem, Menu, ListItemIcon } from '@mui/material';
-import { Blacklist, Activate, Eye } from '../../assets/icons';
+import useStorage from '../../hooks/useStorage';
+import { Chip, Box, MenuItem, Typography} from '@mui/material';
+import { Blacklist, Activate, Eye, Filter } from '../../assets/icons';
 import { urls } from '../../constants/urls';
 import moment from 'moment'
 import { useNavigate } from "react-router-dom";
+import {myDate, Prop, Header} from './types.table'
+import { DialogForm } from './dialogForm';
+import FilterMenu from './filterMenu';
 
-// define types and interfaces
-type myDate = {
-    value: Date
-}
-interface Prop {
-    label : String
-}
+
 
 function CustomChip({label}:Prop){
     var color : string
@@ -48,33 +45,65 @@ function CustomChip({label}:Prop){
     )
 }
 
-
 export default function Table() {
    const [Rows, setRows] = useState<any>([])
    const [loading, setLoading] = useState(true)
+   const [errMsg, setErrMsg] = useState<string>()
    const {getRequest} = useRequest()
+   const {storeUser, getUser} = useStorage()
    let navigate = useNavigate(); 
 
-    useEffect(() => {
+
+    const usersAPI = React.useCallback(()=> {
         getRequest(urls.getUsers).then((response) => {
-            setRows(response.data)    
+            setRows(response.data)
+            setLoading(false)
+        }).catch((err)=>{
+            setLoading(false)
+            if(err.response){
+            setErrMsg(err.response.statusText)  
+            }else{
+            setErrMsg(err.message)
+            }
         });
-        
+    }, [])
+
+    const usersLocal = React.useCallback( async () => {
+        let users = await getUser()
+        if(users){
+            setRows(users)
+            setLoading(false)
+        }
+        else{
+            usersAPI()
+        }
+    },[usersAPI])
+    
+    useEffect(() => {
+        usersLocal()
     }, [])
 
     useEffect(()=>{
-        (Rows.length>0) && setLoading(false)
+        if(Rows.length>0){
+            setLoading(false)
+            storeUser(Rows)
+        }
+        errMsg && setLoading(false)
     }, [Rows])
+
+    
+
 
     const changeStatus = React.useCallback((id: string, param: string) => {
         const newRow = Rows.map((row: any) => {
             return row.id === id ? {...row, status: param} : row
         })
         setRows(newRow)
+        storeUser(newRow)
     },[Rows]);
 
     const viewUser = (id:string)=>{
-        navigate(`/user/${id}`)
+        navigate(`/users/${id}`)
     }
 
     const transactionColumns:GridColumns = [
@@ -83,31 +112,48 @@ export default function Table() {
             headerName: 'Organization',
             width: 180,
             headerClassName: 'header',
+            sortable: false,
+            renderHeader: (params: any) => {
+                return <FilterMenu name = 'Organization'/>
+            }
         },
         {
             field: 'userName',
-            headerName: 'username',
             width: 120,
-            headerClassName: 'header'
+            headerClassName: 'header',
+            sortable: false,
+            renderHeader: (params: any) => {
+                return <FilterMenu name = 'username'/>
+            }
         },
         {
             field: 'email',
-            headerName: 'email',
             width: 150,
-            headerClassName: 'header'
+            headerClassName: 'header',
+            sortable: false,
+            renderHeader: (params: any) => {
+                return <FilterMenu name = 'email'/>
+            }
 
         },
         {
             field: 'phoneNumber',
             headerName: 'Phone Number',
             width: 150,
-            headerClassName: 'header'
+            headerClassName: 'header',
+            sortable: false,
+            renderHeader: (params: any) => {
+                return <FilterMenu name = 'phone number'/>
+            }
         },
         {
             field: 'createdAt',
-            headerName: 'Date Joined',
             width: 200,
             headerClassName: 'header',
+            sortable: false,
+            renderHeader: (params: any) => {
+                return <FilterMenu name = 'date joined'/>
+            },
             valueFormatter: (params:myDate) => {
                 if (params.value == null) {
                 return '';
@@ -119,9 +165,12 @@ export default function Table() {
         {
             field: 'status',
             editable: true,
-            headerName: 'Status',
             width: 150,
             headerClassName: 'header',
+            sortable: false,
+            renderHeader: (params: any) => {
+                return <FilterMenu name = 'status'/>
+            },
             renderCell: (params: any) => {
                 return (
                 <>
@@ -163,6 +212,7 @@ export default function Table() {
 
   return (
     <div style={{ height: 'auto', width: '100%' }}>
+
       <DataGrid
         autoHeight
         sx = {{
@@ -183,7 +233,8 @@ export default function Table() {
             },
             '& .header': {
                 textTransform: 'uppercase',
-                fontSize:'12px',                
+                fontSize:'12px',
+                fontWeight: '550',
             },
             '& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle' : {
                 fontWeight: '600',
@@ -193,6 +244,7 @@ export default function Table() {
         rows={Rows}
         columns={transactionColumns}
         loading = {loading}
+        disableColumnMenu
       />
     </div>
   );

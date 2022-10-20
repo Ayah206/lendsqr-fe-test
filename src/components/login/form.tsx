@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import './login.css';
+import './login.scss';
 import { styled } from '@mui/material/styles';
 import { Stack, Typography, TextField, Button, InputAdornment } from '@mui/material';
 

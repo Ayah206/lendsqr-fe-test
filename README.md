@@ -1,46 +1,26 @@
-# Getting Started with Create React App
+## PROJECT OVERVIEW
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a coding assessment project for a frontend engineer role at Lendsqr. The project entails building four responsive screens from the provided Figma link (https://www.figma.com/file/ZKILoCoIoy1IESdBpq3GNC/FrontendTesting?node-id=5530%3A0 ). 
 
-## Available Scripts
+## PROJECT TASKS
 
-In the project directory, you can run:
+As specified in the assessment documentation, the project tasks includes:
+1. Build the 4 pages : Login, Dashboard, User page, User details page.
+2. The user pages should pull data from a mock api with 500 records.
+3. Use local storage or indexedDB to store and retrieve user details on the user details page.
+4. The page must be mobile responsive.
 
-### `npm start`
+## TECH STACK
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The required tech stack for this project is:
+- React with TypeScript
+- SCSS
+This project uses React material ui as a styling library.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## DETAILS
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project, available on 'heroku.aya.com' has three screens:
+1. Login screen (/login) - Fully responsive but not functional as no login API was provided.
+2. Dashboard (/dashboard or /users) - Renders the application dashboard which by default displays the list of users fetched from the provided API ( https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users).
+This screen also satisfies the filter action and view/change status functionalities specified in the figma 'Users - showing filters' page. 
+3. UserDetails (/users/:id) -  Displays Details of a specific user provided in the param section of the url.

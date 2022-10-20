@@ -1,10 +1,10 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 import Login from './screens/login'
 import Dashboard from './screens/dashboard';
 import Users from './components/dashboard/users';
 import UserDetails from './components/user';
+import DummyText from './components/user/dummyText';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 
@@ -44,12 +44,17 @@ function App() {
       <div className="App">
         <Router>
           <Routes>
+          <Route path = '/' element = {<Dashboard><Users/></Dashboard>}>
+            </Route>
             <Route path = '/login' element = {<Login/>}>
             </Route>
             <Route path = '/users' element = {<Dashboard><Users/></Dashboard>}>
             </Route>
-            <Route path = '/user/:id' element = {<Dashboard><UserDetails/></Dashboard>}>
+            <Route path = '/dashboard' element = {<Dashboard><Users/></Dashboard>}>
             </Route>
+            <Route path = '/users/:id' element = {<Dashboard><UserDetails/></Dashboard>}>
+            </Route>
+            <Route path="*" element={<Dashboard><DummyText/></Dashboard>} />
           </Routes>
         </Router>
       </div>

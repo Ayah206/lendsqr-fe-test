@@ -4,27 +4,27 @@ const MenuData = [
     {
         title : 'customers',
         details : [
-            {icon : <Users/>, text : 'users'},
-            {icon : <Users1/>, text : 'guarantors'},
-            {icon : <Loans/>, text : 'Loans'},
-            {icon : <Handshake/>, text : 'decision models'},
-            {icon : <Savings/>, text : 'Savings'},
-            {icon : <LoanRequest/>, text : 'Loan Request'},
-            {icon : <Whitelist/>, text : 'Whitelist'},
-            {icon : <Karma/>, text : 'Karma'}
+            {icon : <Users />, text : 'users'},
+            {icon : <Users1 opacity = 'inherit' />, text : 'guarantors'},
+            {icon : <Loans opacity = 'inherit' />, text : 'Loans'},
+            {icon : <Handshake opacity = 'inherit'/>, text : 'decision models'},
+            {icon : <Savings opacity = 'inherit' />, text : 'Savings'},
+            {icon : <LoanRequest opacity = 'inherit' />, text : 'Loan Request'},
+            {icon : <Whitelist opacity = 'inherit' />, text : 'Whitelist'},
+            {icon : <Karma opacity = 'inherit' />, text : 'Karma'}
         ]
 
     },
     {
         title : 'businesses',
         details : [
-            {icon : <Briefcase1/>, text : 'ogarnisation'},
-            {icon : <Loans/>, text : 'loan products'},
-            {icon : <SavingsProducts/>, text : 'savings products'},
-            {icon : <Coins/>, text : 'fees and charges'},
-            {icon : <Transactions/>, text : 'transactions'},
-            {icon : <Services/>, text : 'Services'},
-            {icon : <ServiceAccount/>, text : 'service account'},
+            {icon : <Briefcase1 opacity = 'inherit' />, text : 'ogarnisation'},
+            {icon : <Loans opacity = 'inherit' />, text : 'loan products'},
+            {icon : <SavingsProducts opacity = 'inherit' />, text : 'savings products'},
+            {icon : <Coins opacity = 'inherit' />, text : 'fees and charges'},
+            {icon : <Transactions opacity = 'inherit' />, text : 'transactions'},
+            {icon : <Services opacity = 'inherit' />, text : 'Services'},
+            {icon : <ServiceAccount opacity = 'inherit' />, text : 'service account'},
             {icon : <Scroll/>, text : 'settlments'},
             {icon : <Reports/>, text : 'reports'}
         ]
@@ -33,9 +33,9 @@ const MenuData = [
     {
         title : 'settings',
         details : [
-            {icon : <Sliders/>, text : 'preferences'},
-            {icon : <Percent/>, text : 'fees and pricing'},
-            {icon : <Audit/>, text : 'audit logs'}
+            {icon : <Sliders opacity = 'inherit' />, text : 'preferences'},
+            {icon : <Percent opacity = 'inherit' />, text : 'fees and pricing'},
+            {icon : <Audit opacity = 'inherit' />, text : 'audit logs'}
         ]
 
     }
