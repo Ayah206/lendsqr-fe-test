@@ -24,9 +24,10 @@ export default function ClippedDrawer({children}: Props) {
     const location = useLocation()
 
     React.useEffect(()=>{
-        const el = document.getElementById(location.pathname)
+        let pathString = location.pathname.split('/').map(item => item)[1]
+        const el = document.getElementById(pathString)
         el && el.classList.add('menuActive')
-    }, [])
+    })
 
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const handleDrawerToggle = () => {

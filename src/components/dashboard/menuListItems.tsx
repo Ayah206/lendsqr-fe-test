@@ -25,8 +25,8 @@ function MenuListItems({listDetails} : Props) {
                         .map(item => item)
                         .join('-')
                     return (
-                    <ListItem key = {item.text} disablePadding>
-                        <ListItemButton id = {`/${str}`} href = {`/${str}`} >
+                    <ListItem key = {index} disablePadding>
+                        <ListItemButton id = {str} href = {`/${str}`} >
                             <ListItemIcon  sx = {{minWidth:'25px', ml:2, opacity: '60%'}}>
                                 {item.icon}
                             </ListItemIcon>

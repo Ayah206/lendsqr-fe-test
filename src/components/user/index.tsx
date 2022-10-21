@@ -37,7 +37,7 @@ function CustomButton({color, text, disabled, action} : Props){
 }
 
 const StyledTab = styled(Tab)(({ theme }) => ({
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
         flex: 1,
     },
     textTransform: 'capitalize',

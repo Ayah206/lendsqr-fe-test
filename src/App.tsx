@@ -6,7 +6,7 @@ import Users from './components/dashboard/users';
 import UserDetails from './components/user';
 import DummyText from './components/user/dummyText';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Routes, Navigate, BrowserRouter as Router } from 'react-router-dom';
 
 const theme = createTheme({
   typography: {
@@ -45,7 +45,7 @@ function App() {
       <div className="App">
         <Router>
           <Routes>
-          <Route path = '/' element = {<Dashboard><Users/></Dashboard>}>
+            <Route path="/" element = {<Navigate to= "/users" />}> 
             </Route>
             <Route path = '/login' element = {<Login/>}>
             </Route>
