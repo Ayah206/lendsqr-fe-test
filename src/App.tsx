@@ -45,7 +45,7 @@ function App() {
       <div className="App">
         <Router>
           <Routes>
-            <Route path="/" element = {<Navigate to= "/users" />}> 
+            <Route path="/" element = {<Navigate to= "/login" />}> 
             </Route>
             <Route path = '/login' element = {<Login/>}>
             </Route>

@@ -19,7 +19,7 @@ This project uses React material ui as a css library.
 
 ## DETAILS
 
-1. Login screen (/login) - Fully responsive but not functional as no login API was provided.
+1. Login screen (/login) - The root of the application redirects to a Fully responsive login screen. Values for username and password are provided by default, and authentication is not implemented. Clicking the login button redirects to the dashboard.
 2. Dashboard (/users) - Renders the application dashboard which by default displays the table of users fetched from the provided API ( https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users).
 This screen also satisfies the filter action and view/change status functionalities specified in the figma 'Users - showing filters' page. 
 3. UserDetails (/users/:id) -  Displays Details of a specific user provided in the param section of the url.

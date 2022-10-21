@@ -44,11 +44,12 @@ function Form() {
                     </Typography>
                 </Stack> 
                 <Stack spacing = {3} className = 'inputText'>
-                    <TextField fullWidth label="Email" size = 'small'/>
+                    <TextField fullWidth label="Email" size = 'small' value = 'adedeji@admin.com'/>
                     <TextField 
                         size = 'small'
                         fullWidth
                         label="Password"
+                        value = 'password'
                         type = {showPass ? 'text' : 'password'}
                         InputProps={{
                             endAdornment:
@@ -65,7 +66,8 @@ function Form() {
                     <StyledType align = 'left'>
                         FORGOT PASSWORD?
                     </StyledType>
-                    <Button variant="contained" fullWidth 
+                    <Button variant="contained" fullWidth
+                        href = '/users' 
                         size = 'large'
                         sx = {{
                         p:1.5,
